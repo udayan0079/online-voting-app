@@ -80,10 +80,20 @@ class StorageService {
     return AppConstants.defaultBaseUrl;
   }
 
+  // Guide Language
+  static Future<void> saveGuideLanguage(String langCode) async {
+    await prefs.setString('pref_guide_language', langCode);
+  }
+
+  static String getGuideLanguage() {
+    return prefs.getString('pref_guide_language') ?? 'en';
+  }
+
   // Clear Session
   static Future<void> clearSession() async {
     final savedOrgCode = getLastOrgCode();
     final customUrl = prefs.getString(AppConstants.keyCustomBaseUrl);
+    final guideLang = getGuideLanguage();
     await prefs.clear();
     if (savedOrgCode != null) {
       await prefs.setString(AppConstants.keyLastOrgCode, savedOrgCode);
@@ -91,5 +101,6 @@ class StorageService {
     if (customUrl != null) {
       await prefs.setString(AppConstants.keyCustomBaseUrl, customUrl);
     }
+    await prefs.setString('pref_guide_language', guideLang);
   }
 }

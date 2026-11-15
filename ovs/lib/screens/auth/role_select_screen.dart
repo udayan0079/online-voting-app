@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/app_theme.dart';
 import '../../core/storage/storage_service.dart';
+import '../help/how_to_use_screen.dart';
 import 'admin_login_screen.dart';
 import 'admin_register_screen.dart';
 import 'voter_login_screen.dart';
@@ -65,6 +66,16 @@ class RoleSelectScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.help_outline, color: AppTheme.primary),
+            tooltip: 'How to Use / User Guide',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const HowToUseScreen()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.settings_outlined, color: AppTheme.textMuted),
             tooltip: 'Server Connection Config',
@@ -161,6 +172,73 @@ class RoleSelectScreen extends StatelessWidget {
                     MaterialPageRoute(builder: (_) => const AdminRegisterScreen()),
                   );
                 },
+              ),
+
+              const SizedBox(height: 20),
+
+              // How to Use / User Guide Card
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const HowToUseScreen()),
+                  );
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppTheme.primary.withOpacity(0.2), width: 1.2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppTheme.primary.withOpacity(0.06),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 42,
+                        height: 42,
+                        decoration: BoxDecoration(
+                          color: AppTheme.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Icon(Icons.menu_book_rounded, color: AppTheme.primary, size: 22),
+                      ),
+                      const SizedBox(width: 14),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'How to Use App (User Guide)',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: AppTheme.textMain,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              'Step-by-step instructions in 50 Languages',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: AppTheme.textMuted,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: AppTheme.primary),
+                    ],
+                  ),
+                ),
               ),
 
               const SizedBox(height: 24),

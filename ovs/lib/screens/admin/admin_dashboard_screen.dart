@@ -11,6 +11,7 @@ import '../auth/role_select_screen.dart';
 import 'create_election_screen.dart';
 import 'manage_whitelist_screen.dart';
 import 'admin_election_detail_screen.dart';
+import '../help/how_to_use_screen.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -101,6 +102,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           ],
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.help_outline),
+            tooltip: 'How to Use / User Guide',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const HowToUseScreen()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.refresh),
             tooltip: 'Refresh Data',

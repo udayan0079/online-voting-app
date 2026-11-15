@@ -11,6 +11,7 @@ import '../../widgets/status_badge.dart';
 import '../auth/role_select_screen.dart';
 import 'voter_ballot_screen.dart';
 import 'election_results_screen.dart';
+import '../help/how_to_use_screen.dart';
 
 class VoterDashboardScreen extends StatefulWidget {
   const VoterDashboardScreen({super.key});
@@ -161,6 +162,16 @@ class _VoterDashboardScreenState extends State<VoterDashboardScreen> with Single
           ],
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.help_outline),
+            tooltip: 'How to Use / User Guide',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const HowToUseScreen()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.receipt_long_outlined),
             tooltip: 'Verify Vote Receipt',
