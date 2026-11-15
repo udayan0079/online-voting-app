@@ -191,81 +191,83 @@ class _VoterDashboardScreenState extends State<VoterDashboardScreen> with Single
           ],
         ),
       ),
-      body: Column(
-        children: [
-          // Voter Info Banner
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
-            ),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: AppTheme.primary.withOpacity(0.1),
-                  child: Text(
-                    user?.name.isNotEmpty == true ? user!.name[0].toUpperCase() : 'V',
-                    style: const TextStyle(fontWeight: FontWeight.w800, color: AppTheme.primary),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        user?.name ?? 'Authorized Voter',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textMain),
-                      ),
-                      Text(
-                        'Company ID: ${user?.companyId ?? "N/A"}${user?.department.isNotEmpty == true ? " • ${user!.department}" : ""}',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(fontSize: 12, color: AppTheme.textMuted),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFDCFCE7),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.verified, size: 12, color: Color(0xFF15803D)),
-                      SizedBox(width: 4),
-                      Text(
-                        'AUTHORIZED',
-                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Color(0xFF15803D)),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Tab Views
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: _loadElections,
-              child: TabBarView(
-                controller: _tabController,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Voter Info Banner
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
+              ),
+              child: Row(
                 children: [
-                  _buildElectionsTab(electionProvider.activeElections, 'No live voting sessions open right now.'),
-                  _buildElectionsTab(electionProvider.upcomingElections, 'No upcoming elections scheduled.'),
-                  _buildElectionsTab(electionProvider.completedElections, 'No past election results available yet.'),
+                  CircleAvatar(
+                    backgroundColor: AppTheme.primary.withOpacity(0.1),
+                    child: Text(
+                      user?.name.isNotEmpty == true ? user!.name[0].toUpperCase() : 'V',
+                      style: const TextStyle(fontWeight: FontWeight.w800, color: AppTheme.primary),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          user?.name ?? 'Authorized Voter',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textMain),
+                        ),
+                        Text(
+                          'Company ID: ${user?.companyId ?? "N/A"}${user?.department.isNotEmpty == true ? " • ${user!.department}" : ""}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 12, color: AppTheme.textMuted),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFDCFCE7),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.verified, size: 12, color: Color(0xFF15803D)),
+                        SizedBox(width: 4),
+                        Text(
+                          'AUTHORIZED',
+                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: Color(0xFF15803D)),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-          ),
-        ],
+
+            // Tab Views
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: _loadElections,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    _buildElectionsTab(electionProvider.activeElections, 'No live voting sessions open right now.'),
+                    _buildElectionsTab(electionProvider.upcomingElections, 'No upcoming elections scheduled.'),
+                    _buildElectionsTab(electionProvider.completedElections, 'No past election results available yet.'),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -280,7 +282,7 @@ class _VoterDashboardScreenState extends State<VoterDashboardScreen> with Single
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 80),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
       itemCount: list.length,
       itemBuilder: (ctx, index) {
         final election = list[index];
@@ -358,23 +360,91 @@ class _VoterDashboardScreenState extends State<VoterDashboardScreen> with Single
                 ],
               ),
               const SizedBox(height: 12),
+
+              // Candidates Count & Secret Ballot Badge
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Icon(Icons.people_outline, size: 15, color: AppTheme.textMuted),
-                  const SizedBox(width: 4),
-                  Text(
-                    '${election.candidates.length} Candidates Nominated',
-                    style: const TextStyle(fontSize: 12, color: AppTheme.textMuted),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.people_outline, size: 15, color: AppTheme.textMuted),
+                      const SizedBox(width: 5),
+                      Text(
+                        '${election.candidates.length} Candidates',
+                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.textMuted),
+                      ),
+                    ],
                   ),
-                  const Spacer(),
-                  const Icon(Icons.lock_outline, size: 13, color: AppTheme.primary),
-                  const SizedBox(width: 4),
-                  const Text(
-                    'Secret Ballot',
-                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.primary),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primary.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: AppTheme.primary.withOpacity(0.2)),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.lock_outline, size: 12, color: AppTheme.primary),
+                        SizedBox(width: 4),
+                        Text(
+                          'Secret Ballot',
+                          style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.primary),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
+
+              // Candidate chips preview
+              if (election.candidates.isNotEmpty) ...[
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: election.candidates.take(3).map((cand) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8FAFC),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircleAvatar(
+                            radius: 8,
+                            backgroundColor: AppTheme.primary.withOpacity(0.15),
+                            child: Text(
+                              cand.name.isNotEmpty ? cand.name[0].toUpperCase() : '?',
+                              style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: AppTheme.primary),
+                            ),
+                          ),
+                          const SizedBox(width: 5),
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 120),
+                            child: Text(
+                              cand.name,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.textMain),
+                            ),
+                          ),
+                          if (cand.symbolName.isNotEmpty) ...[
+                            const SizedBox(width: 4),
+                            Text(
+                              '(${cand.symbolName})',
+                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: AppTheme.accent),
+                            ),
+                          ],
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
               const SizedBox(height: 14),
             ],
 
@@ -383,12 +453,16 @@ class _VoterDashboardScreenState extends State<VoterDashboardScreen> with Single
               if (election.hasVoted) ...[
                 SizedBox(
                   width: double.infinity,
-                  height: 44,
+                  height: 48,
                   child: OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
                     icon: const Icon(Icons.receipt_long, size: 18),
                     label: Text(
                       election.voteReceipt != null ? 'View Receipt (${election.voteReceipt})' : 'Vote Submitted',
-                      style: const TextStyle(fontSize: 13),
+                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
                     ),
                     onPressed: () {
                       if (election.voteReceipt != null) {
@@ -398,19 +472,44 @@ class _VoterDashboardScreenState extends State<VoterDashboardScreen> with Single
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Center(
-                  child: Text(
-                    '✓ Your vote is encrypted and securely sealed on the company ledger.',
-                    style: TextStyle(fontSize: 11, color: AppTheme.success, fontWeight: FontWeight.w600),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF0FDF4),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFFDCFCE7)),
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.verified, size: 13, color: AppTheme.success),
+                      SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          'Your vote is encrypted and securely sealed on ledger.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF15803D),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ] else ...[
                 SizedBox(
                   width: double.infinity,
-                  height: 46,
+                  height: 48,
                   child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
                     icon: const Icon(Icons.how_to_vote, size: 18),
-                    label: const Text('Cast Your Vote Now', style: TextStyle(fontWeight: FontWeight.w700)),
+                    label: const Text('Cast Your Vote Now', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
                     onPressed: () async {
                       final voted = await Navigator.push(
                         context,
@@ -423,21 +522,98 @@ class _VoterDashboardScreenState extends State<VoterDashboardScreen> with Single
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Center(
-                  child: Text(
-                    '🔒 One vote per employee. Vote is confidential, anonymous & final.',
-                    style: TextStyle(fontSize: 11, color: AppTheme.textMuted),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF1F5F9),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFFE2E8F0)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.shield_outlined, size: 13, color: AppTheme.primary),
+                      const SizedBox(width: 6),
+                      Flexible(
+                        child: Text(
+                          'Confidential & Anonymous • One Vote Per Employee',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.blueGrey.shade700,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ] else if (election.isCompleted) ...[
+              // Candidate & Vote Count info
+              Row(
+                children: [
+                  const Icon(Icons.people_outline, size: 14, color: AppTheme.textMuted),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${election.candidates.length} Candidates',
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: AppTheme.textMuted),
+                  ),
+                  const SizedBox(width: 14),
+                  const Icon(Icons.how_to_vote_outlined, size: 14, color: AppTheme.primary),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${election.totalVotes} Total Votes',
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.primary),
+                  ),
+                ],
+              ),
+              if (election.winner != null) ...[
+                const SizedBox(height: 10),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFEF3C7),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFFFDE68A)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.emoji_events, size: 16, color: Color(0xFFD97706)),
+                      const SizedBox(width: 6),
+                      Text(
+                        'Winner: ${election.winner!.name}',
+                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Color(0xFF92400E)),
+                      ),
+                      if (election.winner!.symbolName.isNotEmpty) ...[
+                        const SizedBox(width: 4),
+                        Text(
+                          '(${election.winner!.symbolName})',
+                          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFFB45309)),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+              const SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,
-                height: 44,
+                height: 48,
                 child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(backgroundColor: AppTheme.accentIndigo),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.accentIndigo,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
                   icon: const Icon(Icons.bar_chart, size: 18),
-                  label: const Text('View Official Results & Winner', style: TextStyle(fontWeight: FontWeight.w700)),
+                  label: const Text(
+                    'View Official Results & Winner',
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
