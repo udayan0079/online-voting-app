@@ -12,6 +12,7 @@ import '../auth/role_select_screen.dart';
 import 'voter_ballot_screen.dart';
 import 'election_results_screen.dart';
 import '../help/how_to_use_screen.dart';
+import '../blockchain/blockchain_explorer_screen.dart';
 
 class VoterDashboardScreen extends StatefulWidget {
   const VoterDashboardScreen({super.key});
@@ -162,6 +163,16 @@ class _VoterDashboardScreenState extends State<VoterDashboardScreen> with Single
           ],
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.link_rounded, color: Color(0xFF0284C7)),
+            tooltip: 'Blockchain Explorer',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const BlockchainExplorerScreen()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.help_outline),
             tooltip: 'How to Use / User Guide',

@@ -13,6 +13,7 @@ import 'manage_whitelist_screen.dart';
 import 'admin_election_detail_screen.dart';
 import '../help/how_to_use_screen.dart';
 import 'admin_ai_chatbot_screen.dart';
+import '../blockchain/blockchain_explorer_screen.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -103,6 +104,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           ],
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.link_rounded, color: Color(0xFF0284C7)),
+            tooltip: 'Blockchain Explorer',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const BlockchainExplorerScreen()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.smart_toy_outlined),
             tooltip: 'AI Admin Assistant',
@@ -336,6 +347,72 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         ),
                       ),
                       const Icon(Icons.chat_bubble_outline_rounded, size: 16, color: AppTheme.accentIndigo),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              // Blockchain Explorer Quick Card
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const BlockchainExplorerScreen()),
+                  );
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: const Color(0xFF0284C7).withOpacity(0.3), width: 1.2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFF0284C7).withOpacity(0.06),
+                        blurRadius: 10,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF0284C7).withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(Icons.link_rounded, color: Color(0xFF0284C7), size: 22),
+                      ),
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Blockchain Audit Explorer',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13,
+                                color: AppTheme.textMain,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              'SHA-256 Tamper-Proof Blocks & Real-Time Integrity Audit',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: AppTheme.textMuted,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Color(0xFF0284C7)),
                     ],
                   ),
                 ),

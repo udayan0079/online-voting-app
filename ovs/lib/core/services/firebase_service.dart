@@ -7,6 +7,7 @@ import '../../models/organization_model.dart';
 import '../../models/user_model.dart';
 import '../../models/whitelist_model.dart';
 import '../../models/dashboard_stats_model.dart';
+import 'blockchain_service.dart';
 
 class FirebaseService {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -736,7 +737,7 @@ class FirebaseService {
       final electionRef = _db.collection('organizations').doc(cleanOrg).collection('elections').doc(electionId);
       final voteRef = electionRef.collection('votes').doc(cleanVoter);
 
-      return await _db.runTransaction((transaction) async {
+      final result = await _db.runTransaction((transaction) async {
         final electionSnap = await transaction.get(electionRef);
         if (!electionSnap.exists) {
           return {'success': false, 'message': 'Election not found.'};
@@ -791,8 +792,26 @@ class FirebaseService {
           'message': 'Vote cast successfully!',
           'receipt': receipt,
           'candidateName': candidateName,
+          'electionTitle': (data['title'] ?? 'Corporate Election').toString(),
         };
       });
+
+      if (result['success'] == true) {
+        // Record Block onto Blockchain Ledger
+        try {
+          await BlockchainService.recordVoteBlock(
+            orgCode: cleanOrg,
+            electionId: electionId,
+            electionTitle: result['electionTitle']?.toString() ?? 'Corporate Election',
+            candidateId: candidateId,
+            candidateName: result['candidateName']?.toString() ?? 'Candidate',
+            voterCompanyId: cleanVoter,
+            receiptCode: result['receipt']?.toString() ?? '',
+          );
+        } catch (_) {}
+      }
+
+      return result;
     } catch (e) {
       return {'success': false, 'message': 'Firebase Transaction Error: $e'};
     }

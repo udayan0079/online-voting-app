@@ -6,6 +6,35 @@
 // Intent knowledge graph and diagnostic rules
 const KNOWLEDGE_BASE = [
   {
+    id: 'blockchain_overview',
+    keywords: ['blockchain', 'block chain', 'ব্লকচেইন', 'ব্লক চেইন', 'ledger', 'লেজার', 'sha256', 'hash', 'genesis', 'tamper', 'block explorer', 'proof of work'],
+    category: 'Blockchain & Cryptography',
+    en: {
+      title: 'SmartVote Cryptographic Blockchain & Tamper-Proof Ledger',
+      steps: [
+        'Every cast ballot is permanently mined as a Cryptographic Block linked to the previous block via SHA-256 hash.',
+        'Genesis Block (#0): The chain begins with a cryptographically sealed Genesis Block for your organization.',
+        'Zero Tampering: If any record is modified, the hash chain breaks immediately, alerting the system.',
+        'Blockchain Explorer: Admins and Voters can inspect every block, timestamp, nonce, and hash in real-time.',
+        'Audit Validation: Tap "Validate Blockchain Integrity" to run real-time cryptographic audit across all blocks.'
+      ],
+      tips: 'Ballots are pseudonymously hashed on-chain, guaranteeing both tamper-proofing and 100% secret ballot confidentiality.',
+      suggestedFollowUps: ['How to view Blockchain Explorer?', 'How to verify vote receipt?']
+    },
+    bn: {
+      title: 'স্মার্টভোট ক্রিপ্টোগ্রাফিক ব্লকচেইন ও অডিট লেজার',
+      steps: [
+        'প্রতিটি ভোট দেওয়ার সাথে সাথে একটি ক্রিপ্টোগ্রাফিক ব্লক (SHA-256 Block) তৈরি হয়ে ব্লকচেইনে স্থায়ীভাবে সিল হয়ে যায়।',
+        'Genesis Block (#0): আপনার অর্গানাইজেশনের নিজস্ব জেনেসিস ব্লক দিয়ে চেইন সুরক্ষিতভাবে শুরু হয়।',
+        'ট্যাম্পার-প্রুফ: কেউ ডেটাবেসের কোনো তথ্যে কারচুপি করার চেষ্টা করলে হ্যাশ চেইন তাৎক্ষণিক ভেঙে গিয়ে সতর্কবার্তা দেবে।',
+        'Blockchain Explorer: অ্যাপের মেনু থেকে সরাসরি প্রতিটি ব্লক, টাইমস্ট্যাম্প, হ্যাশ এবং ননস নিরীক্ষা করতে পারবেন।',
+        'অডিট ভেরিফিকেশন: "Validate Blockchain Integrity" বাটনে এক ক্লিকে সম্পূর্ণ ব্লকচেইনের বিশুদ্ধতা যাচাই করা যায়।'
+      ],
+      tips: 'ব্লকচেইনে প্রতিটি ব্যালট ক্রিপ্টোগ্রাফিকভাবে সুরক্ষিত থাকে, ফলে ভোট সম্পূর্ণ গোপন থাকে এবং কেউ ভোট মুছতে পারে না।',
+      suggestedFollowUps: ['ব্লকচেইন এক্সপ্লোরার কীভাবে দেখব?', 'ভোটের রসিদ (Receipt) ভেরিফাই করার নিয়ম']
+    }
+  },
+  {
     id: 'whitelist_guide',
     keywords: ['whitelist', 'voter list', 'add voter', 'voter entry', 'csv', 'হোয়াইটলিস্ট', 'ভোটার যোগ', 'ভোটার লিস্ট', 'ভোটার এড'],
     category: 'Voter Whitelist Management',
