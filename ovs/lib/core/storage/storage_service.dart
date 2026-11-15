@@ -89,6 +89,15 @@ class StorageService {
     return prefs.getString('pref_guide_language') ?? 'en';
   }
 
+  // Gemini API Key for Real-Time Autonomous AI Reasoning
+  static Future<void> saveGeminiApiKey(String apiKey) async {
+    await prefs.setString('pref_gemini_api_key', apiKey.trim());
+  }
+
+  static String getGeminiApiKey() {
+    return prefs.getString('pref_gemini_api_key') ?? '';
+  }
+
   // Clear Session
   static Future<void> clearSession() async {
     final savedOrgCode = getLastOrgCode();

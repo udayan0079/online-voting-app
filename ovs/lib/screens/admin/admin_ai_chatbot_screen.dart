@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants/app_theme.dart';
 import '../../core/services/ai_bot_service.dart';
+import '../../core/storage/storage_service.dart';
 import '../../models/ai_message_model.dart';
 import '../../providers/auth_provider.dart';
 
@@ -146,8 +147,98 @@ class _AdminAiChatbotScreenState extends State<AdminAiChatbotScreen> {
     );
   }
 
+  void _showGeminiKeyDialog() {
+    final keyController = TextEditingController(text: StorageService.getGeminiApiKey());
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Colors.purple.shade100,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(Icons.psychology_rounded, color: Colors.purple, size: 22),
+            ),
+            const SizedBox(width: 10),
+            const Expanded(
+              child: Text(
+                'Google Gemini AI Setup',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'To enable 100% autonomous, custom generative thinking that can diagnose and fix ANY unique app error or bug, paste your free Google Gemini API Key below.',
+              style: TextStyle(fontSize: 12, color: AppTheme.textMuted, height: 1.4),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade50,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.blue.shade200),
+              ),
+              child: const Text(
+                'Get free key in 10 sec: https://aistudio.google.com/app/apikey (Google AI Studio)',
+                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFF1D4ED8)),
+              ),
+            ),
+            const SizedBox(height: 14),
+            TextField(
+              controller: keyController,
+              decoration: const InputDecoration(
+                labelText: 'Gemini API Key',
+                hintText: 'AIzaSy...',
+                prefixIcon: Icon(Icons.key, size: 18),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              await StorageService.saveGeminiApiKey('');
+              if (mounted) {
+                Navigator.pop(ctx);
+                setState(() {});
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Gemini API Key removed. Using on-device diagnostics.')),
+                );
+              }
+            },
+            child: const Text('Remove Key', style: TextStyle(color: AppTheme.danger)),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              await StorageService.saveGeminiApiKey(keyController.text.trim());
+              if (mounted) {
+                Navigator.pop(ctx);
+                setState(() {});
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Google Gemini AI successfully activated! 🚀')),
+                );
+              }
+            },
+            child: const Text('Save & Activate'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final hasGeminiKey = StorageService.getGeminiApiKey().isNotEmpty;
+
     return Scaffold(
       backgroundColor: AppTheme.bgLight,
       appBar: AppBar(
@@ -182,15 +273,19 @@ class _AdminAiChatbotScreenState extends State<AdminAiChatbotScreen> {
                       Container(
                         width: 7,
                         height: 7,
-                        decoration: const BoxDecoration(
-                          color: AppTheme.success,
+                        decoration: BoxDecoration(
+                          color: hasGeminiKey ? Colors.purple : AppTheme.success,
                           shape: BoxShape.circle,
                         ),
                       ),
                       const SizedBox(width: 5),
-                      const Text(
-                        'Live & Deep Reasoning Ready',
-                        style: TextStyle(fontSize: 11, color: AppTheme.success, fontWeight: FontWeight.w600),
+                      Text(
+                        hasGeminiKey ? 'Gemini 1.5 Flash Active 🚀' : 'Diagnostic Engine Active ⚡',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: hasGeminiKey ? Colors.purple.shade700 : AppTheme.success,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ],
                   ),
@@ -200,6 +295,14 @@ class _AdminAiChatbotScreenState extends State<AdminAiChatbotScreen> {
           ],
         ),
         actions: [
+          IconButton(
+            icon: Icon(
+              hasGeminiKey ? Icons.vpn_key_rounded : Icons.key_outlined,
+              color: hasGeminiKey ? Colors.purple : AppTheme.textMuted,
+            ),
+            tooltip: 'Gemini AI Key Setup',
+            onPressed: _showGeminiKeyDialog,
+          ),
           IconButton(
             icon: const Icon(Icons.delete_sweep_outlined),
             tooltip: 'Clear Chat',
