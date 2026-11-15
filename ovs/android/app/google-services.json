@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "338602350872",
+    "project_id": "smartvote-corp-2026",
+    "storage_bucket": "smartvote-corp-2026.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338602350872:android:08f1283b9568f7e13fe66d",
+        "android_client_info": {
+          "package_name": "com.example.ovs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHFXFlrDmgC8LbeBRGPWugnu2qZ9IJThI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
