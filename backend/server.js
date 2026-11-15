@@ -38,6 +38,7 @@ app.use('/api/whitelist', require('./routes/whitelistRoutes'));
 app.use('/api/elections', require('./routes/electionRoutes'));
 app.use('/api/votes', require('./routes/voteRoutes'));
 app.use('/api/analytics', require('./routes/analyticsRoutes'));
+app.use('/api/ai', require('./routes/aiRoutes'));
 
 // 404 & Error Handlers
 app.use(notFound);

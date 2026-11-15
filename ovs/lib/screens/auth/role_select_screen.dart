@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/constants/app_theme.dart';
 import '../../core/storage/storage_service.dart';
 import '../help/how_to_use_screen.dart';
+import '../admin/admin_ai_chatbot_screen.dart';
 import 'admin_login_screen.dart';
 import 'admin_register_screen.dart';
 import 'voter_login_screen.dart';
@@ -66,6 +67,16 @@ class RoleSelectScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.smart_toy_outlined, color: AppTheme.accentIndigo),
+            tooltip: 'AI Troubleshooting Assistant',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AdminAiChatbotScreen()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.help_outline, color: AppTheme.primary),
             tooltip: 'How to Use / User Guide',

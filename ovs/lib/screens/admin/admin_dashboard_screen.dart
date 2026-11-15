@@ -12,6 +12,7 @@ import 'create_election_screen.dart';
 import 'manage_whitelist_screen.dart';
 import 'admin_election_detail_screen.dart';
 import '../help/how_to_use_screen.dart';
+import 'admin_ai_chatbot_screen.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -103,6 +104,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.smart_toy_outlined),
+            tooltip: 'AI Admin Assistant',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AdminAiChatbotScreen()),
+              );
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.help_outline),
             tooltip: 'How to Use / User Guide',
             onPressed: () {
@@ -123,6 +134,22 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             onPressed: _confirmLogout,
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'admin_ai_assistant_fab',
+        icon: const Icon(Icons.smart_toy_rounded, color: Colors.white, size: 20),
+        label: const Text(
+          'AI Assistant',
+          style: TextStyle(fontWeight: FontWeight.w700, color: Colors.white, fontSize: 13),
+        ),
+        backgroundColor: AppTheme.accentIndigo,
+        elevation: 6,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AdminAiChatbotScreen()),
+          );
+        },
       ),
       body: RefreshIndicator(
         onRefresh: _loadDashboardData,
@@ -248,7 +275,73 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 ),
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
+
+              // AI Assistant Quick Help Card
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AdminAiChatbotScreen()),
+                  );
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: AppTheme.accentIndigo.withOpacity(0.25), width: 1.2),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppTheme.accentIndigo.withOpacity(0.06),
+                        blurRadius: 10,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppTheme.accentIndigo.withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(Icons.smart_toy_rounded, color: AppTheme.accentIndigo, size: 22),
+                      ),
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Facing any problem? Ask AI Bot',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13,
+                                color: AppTheme.textMain,
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              'Real-time step-by-step troubleshooting assistant',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: AppTheme.textMuted,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.chat_bubble_outline_rounded, size: 16, color: AppTheme.accentIndigo),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
 
               // Overview Metrics Row
               const Text(
